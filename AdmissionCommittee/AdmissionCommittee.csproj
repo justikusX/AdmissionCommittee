@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>AdmissionCommittee</RootNamespace>
+    <AssemblyName>AdmissionCommittee</AssemblyName>
+    <Product>Приёмная комиссия</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Драйвер PostgreSQL для .NET. Visual Studio скачает его сама при первой сборке. -->
+    <PackageReference Include="Npgsql" Version="8.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

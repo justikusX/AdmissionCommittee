@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="AdmissionCommittee.Views.AuditTabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,12">
+            <Button Content="Обновить" Command="{Binding RefreshCommand}" Style="{StaticResource SecondaryButton}"/>
+            <TextBlock Style="{StaticResource Hint}" VerticalAlignment="Center"
+                       Text="Последние 300 действий. Журнал заполняется триггерами БД; роль приложения не может его изменять или удалять."/>
+        </StackPanel>
+
+        <DataGrid ItemsSource="{Binding Entries}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№" Binding="{Binding LogId}" Width="60"/>
+                <DataGridTextColumn Header="Время" Binding="{Binding EventTime, StringFormat={}{0:dd.MM.yyyy HH:mm:ss}}" Width="145"/>
+                <DataGridTextColumn Header="Пользователь" Binding="{Binding AppUser}" Width="110"/>
+                <DataGridTextColumn Header="Роль БД" Binding="{Binding DbUser}" Width="110"/>
+                <DataGridTextColumn Header="Таблица" Binding="{Binding TableName}" Width="140"/>
+                <DataGridTextColumn Header="Операция" Binding="{Binding Operation}" Width="85"/>
+                <DataGridTextColumn Header="Данные" Binding="{Binding RowData}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

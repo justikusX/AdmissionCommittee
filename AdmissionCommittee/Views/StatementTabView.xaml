@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="AdmissionCommittee.Views.StatementTabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DockPanel>
+        <!-- Фильтры -->
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,12">
+            <TextBlock Text="Факультет:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+            <ComboBox ItemsSource="{Binding FacultyFilter}" SelectedItem="{Binding SelectedFacultyFilter}"
+                      DisplayMemberPath="Name" Width="260" Margin="0"/>
+            <CheckBox Content="Только ожидающие проверки" IsChecked="{Binding OnlyUnconfirmed}" Margin="16,0"/>
+            <Button Content="Обновить" Command="{Binding RefreshCommand}" Style="{StaticResource SecondaryButton}"/>
+        </StackPanel>
+
+        <!-- Панель регистрации балла -->
+        <Border DockPanel.Dock="Right" Width="300" Style="{StaticResource Card}" Margin="12,0,0,0" VerticalAlignment="Top">
+            <StackPanel>
+                <TextBlock Text="Регистрация в ведомости" Style="{StaticResource H2}"/>
+                <TextBlock Text="Абитуриент" Style="{StaticResource FieldLabel}"/>
+                <TextBlock Text="{Binding SelectedRow.ApplicantName}" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,0,0,8"/>
+                <TextBlock Text="Предмет" Style="{StaticResource FieldLabel}"/>
+                <TextBlock Text="{Binding SelectedRow.SubjectName}" Margin="0,0,0,8"/>
+                <TextBlock Text="Балл (можно исправить)" Style="{StaticResource FieldLabel}"/>
+                <TextBox Text="{Binding EditScoreText, UpdateSourceTrigger=PropertyChanged}" MaxLength="3"/>
+                <Button Content="Зарегистрировать балл" Command="{Binding ConfirmCommand}"
+                        Style="{StaticResource SuccessButton}" Margin="0,0,0,8"/>
+                <Button Content="Снять регистрацию" Command="{Binding UnconfirmCommand}"
+                        Style="{StaticResource SecondaryButton}" Margin="0,0,0,16"/>
+                <Separator Margin="0,0,0,16"/>
+                <Button Content="Зарегистрировать все показанные" Command="{Binding ConfirmAllCommand}" Margin="0"/>
+                <TextBlock Style="{StaticResource Hint}" Margin="0,12,0,0"
+                           Text="Красным выделены баллы ниже минимального по предмету. Все изменения записываются в журнал."/>
+            </StackPanel>
+        </Border>
+
+        <TextBlock DockPanel.Dock="Bottom" Text="{Binding Summary}" Style="{StaticResource Hint}" Margin="0,8,0,0"/>
+
+        <DataGrid ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow}">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsConfirmed}" Value="False">
+                            <Setter Property="Background" Value="{StaticResource WarningLightBrush}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsBelowMin}" Value="True">
+                            <Setter Property="Foreground" Value="{StaticResource ErrorBrush}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Факультет" Binding="{Binding FacultyName}" Width="170"/>
+                <DataGridTextColumn Header="Абитуриент" Binding="{Binding ApplicantName}" Width="*"/>
+                <DataGridTextColumn Header="Предмет" Binding="{Binding SubjectName}" Width="140"/>
+                <DataGridTextColumn Header="Балл" Binding="{Binding Score}" Width="60"/>
+                <DataGridTextColumn Header="Мин." Binding="{Binding MinScore}" Width="55"/>
+                <DataGridTextColumn Header="Состояние" Binding="{Binding StateText, Mode=OneWay}" Width="140"/>
+                <DataGridTextColumn Header="Кем" Binding="{Binding ConfirmedBy}" Width="80"/>
+                <DataGridTextColumn Header="Когда" Binding="{Binding ConfirmedAt, StringFormat={}{0:dd.MM.yyyy HH:mm}}" Width="125"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>
